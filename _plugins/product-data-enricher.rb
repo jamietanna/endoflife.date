@@ -36,6 +36,8 @@ module Jekyll
         set_description(page)
         set_icon_url(page)
         set_tags(page)
+        set_identifiers(page)
+        set_aliases(page)
         set_overridden_columns_label(page)
 
         page.data["releases"].each { |release| enrich_release(page, release) }
@@ -82,6 +84,23 @@ module Jekyll
 
         tags << page.data['category']
         page.data['tags'] = tags.sort
+      end
+
+      # Set alias (derived from alternate_urls).
+      def set_aliases(page)
+        if page.data['alternate_urls']
+          page.data['aliases'] = page.data['alternate_urls'].map { |path| path[1..] }
+        else
+          page.data['alternate_urls'] = [] # should be in a separate method, but easier that way
+          page.data['aliases'] = []
+        end
+      end
+
+      # Set identifiers to empty if it's not present.
+      def set_identifiers(page)
+        if !page.data['identifiers']
+          page.data['identifiers'] = []
+        end
       end
 
       # Set properly the column presence/label if it was overridden.
@@ -182,7 +201,7 @@ module Jekyll
       def set_cycle_id(cycle)
         cycle['id'] = cycle['releaseCycle'].tr('/', '-')
       end
-      
+
       # Set lts to false if it has no value and explode it to is_lts (boolean) and lts_from (Date).
       # See explode_date_or_boolean_field(...) for more information.
       def set_cycle_lts_fields(cycle)
