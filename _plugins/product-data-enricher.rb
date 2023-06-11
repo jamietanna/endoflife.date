@@ -345,8 +345,10 @@ module Jekyll
         return (date_timestamp - now_timestamp) / (60 * 60 * 24)
       end
 
+      # Template rendering function that replaces placeholders.
+      # The template is stripped to avoid unnecessary whitespaces in the output.
       def render_eol_template(template, cycle)
-        link = template.gsub('__RELEASE_CYCLE__', cycle['releaseCycle'] || '')
+        link = template.strip().gsub('__RELEASE_CYCLE__', cycle['releaseCycle'] || '')
         link.gsub!('__CODENAME__', cycle['codename'] || '')
         link.gsub!('__LATEST__', cycle['latest'] || '')
         link.gsub!('__LATEST_RELEASE_DATE__', cycle['latestReleaseDate'] ? cycle['latestReleaseDate'].iso8601 : '')
