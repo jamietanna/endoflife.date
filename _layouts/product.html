@@ -6,7 +6,9 @@ layout: default
   <div class="d-flex flex-justify-between align-items-center">
     <h1>{{ page.title }}</h1>
     <span class="labels">
-      {% for tag in page.tags %}<span class="label">{{ tag }}</span>{% endfor %}
+      {%- for tag in page.tags %}
+        <a href="/tags/{{ tag }}"><span class="label">{{ tag }}</span></a>
+      {%- endfor %}
     </span>
   </div>
 
@@ -19,14 +21,7 @@ layout: default
 </div>
 
 <div class="product-description">
-  {%- assign iconUrl = page.iconUrl %}
-  {%- assign iconDescription = page.title %}
-  {%- unless iconUrl %}
-    {%- assign iconDescription = 'No product' %}
-    {%- assign iconUrl = '/assets/default-product-logo.svg' | relative_url %}
-  {%- endunless %}
-  <img class="product-logo" width="50" src="{{ iconUrl }}" alt="{{ iconDescription }} logo">
-
+  {% include product-icon.html product=page size=50 %}
   {{content | extract_element:'blockquote' | first | extract_element:'p' }}
 </div>
 

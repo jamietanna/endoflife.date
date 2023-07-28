@@ -1,0 +1,18 @@
+---
+layout: default
+---
+<div class="product-list">
+  <h1>{{ page.title }}</h1>
+
+  {% for product in page.products %}
+  <div class="product-list-item">
+    <h2 class="product-title">
+      {% include product-icon.html product=product size=30 %}
+      <a href="{{ product.permalink }}">{{ product.title }}</a>
+    </h2>
+    <div class="product-description">
+      {{ product.content | extract_element:'blockquote' | first | extract_element:'p' }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
